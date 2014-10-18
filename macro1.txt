@@ -1,0 +1,21 @@
+Sub Macro1()
+'
+' Macro1 Macro
+' This Macro copies, pastes, and reformates the contents of an excel sheet to the source sheet.
+'
+' Keyboard Shortcut: Ctrl+Shift+Q
+'
+
+controlFile = ThisWorkbook.Name 'The Workbook is assigned to the varaible controlFile
+
+ActiveWB = ActiveWorkbook.Name 'The Active Workbook is assigned to the varaible ActiveWB
+    Windows(ActiveWB).Activate
+    Cells.Select
+    Selection.Copy
+    ActiveWindow.Close 'After the cells are copied from the ActiveWB the ActiveWB closes
+    Windows(controlFile).Activate 'The Workbook the macro is assigned to is not activated
+    Range("A1").Select 'Top left corner is selected for proper pasting
+    ActiveSheet.Paste 'Contents are pasted on
+    Cells.EntireColumn.AutoFit 'Columns are reformatted
+    Worksheets(ActiveSheet.Index + 1).Select
+End Sub

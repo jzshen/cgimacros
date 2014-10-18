@@ -1,0 +1,29 @@
+Function findClient(client As String)
+   Dim i As Long
+   Dim last_row As Long
+   Dim ret_val As String
+   ret_val = ""
+   
+  
+   last_row = Workbooks("purge10.xlsm").Sheets("Sheet1").Range("A" & Rows.Count).End(xlUp).Row
+   For i = 2 To last_row
+      If Workbooks("purge10.xlsm").Sheets("Sheet1").Cells(i, 1).Value = client Then
+         ret_val = Workbooks("purge10.xlsm").Sheets("Sheet1").Cells(i, 2).Value
+      End If
+   Next
+   findClient = ret_val
+End Function
+ 
+ Private Sub CommandButton1_Click()
+   Dim i As Long
+   Dim last_row As Long
+   
+   Workbooks("Book1.xlsm").Sheets("Sheet1").Activate
+   last_row = ActiveSheet.Range("A" & Rows.Count).End(xlUp).Row
+   For i = 2 To last_row
+      ActiveSheet.Cells(i, 10).Value = findClient(ActiveSheet.Cells(i, 1).Value)
+      If ActiveSheet.Cells(i, 10).Value = "" Then
+         ActiveSheet.Cells(i, 10).Value = "False"
+      End If
+   Next
+End Sub

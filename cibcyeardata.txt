@@ -1,0 +1,22 @@
+Sub CIBCYEARDATA()
+'
+' CIBCYEARDATA Macro
+'
+' Keyboard Shortcut: Ctrl+Shift+D
+'
+Dim mon As Integer
+mon = Month(Date)
+monSheet = ThisWorkbook.Sheets(mon).Name
+controlFile = ThisWorkbook.Name
+dataSheet = ThisWorkbook.Sheets(13).Name
+
+ActiveWB = ActiveWorkbook.Name
+    Windows(ActiveWB).Activate
+    Cells.Select
+    Selection.Copy
+    Windows(controlFile).Activate
+    Worksheets(dataSheet).Activate
+    Range("A1").Select
+    ThisWorkbook.Worksheets(dataSheet).Paste
+    Worksheets(mon).Activate
+End Sub

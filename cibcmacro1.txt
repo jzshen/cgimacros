@@ -1,0 +1,48 @@
+Sub CIBCMacro1()
+
+Dim i As Integer
+Dim last_row As Integer
+
+Dim BOD As Date
+Dim EOD As Date
+
+controlFile = ThisWorkbook.Name
+
+'
+' CIBMacro1 Macro
+'
+' Keyboard Shortcut: Ctrl+Shift+Q
+'
+ActiveWB = ActiveWorkbook.Name
+    Windows(ActiveWB).Activate
+    Range("A1:E200").Select
+    Selection.Copy
+    Windows(controlFile).Activate
+    controlSheet = ActiveSheet.Name
+    Range("A8").Select
+    ActiveSheet.Paste
+    Cells.EntireColumn.AutoFit
+    'Getting the BOD and EOD times
+    'Processing COINS SIFs or BOD
+    last_row = ThisWorkbook.Worksheets(controlSheet).UsedRange.Rows.Count
+    BOD = Mid(Cells(8, 3), 12, 8)
+    For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(controlSheet).Cells(i, 2), "Processing COINS SIFs") Then
+            BOD = Mid(Cells(i, 3), 12, 8)
+        End If
+    Next i
+    ActiveSheet.Cells(8, 7).Value = Trim(BOD)
+    'EOD
+    For i = 8 To last_row
+         Cells(i, 6) = Mid(Cells(i, 4), 12, 8)
+    Next i
+    EOD = Application.WorksheetFunction.Max(Columns("F"))
+    ActiveSheet.Columns(6).ClearContents
+    For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(controlSheet).Cells(i, 2), "Processing MOTE1 SIF") Then
+            EOD = Mid(Cells(i - 1, 4), 12, 8)
+        End If
+    Next i
+    ActiveSheet.Cells(9, 7).Value = Trim(EOD)
+    Cells.EntireColumn.AutoFit
+End Sub

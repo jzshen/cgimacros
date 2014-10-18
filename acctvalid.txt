@@ -1,0 +1,97 @@
+Sub acctvalidation()
+'Section 1: Variables
+'1.1: These variables are all used to locate the following column headers
+    Dim TRNCD As Long
+    Dim GROSS As Long
+    Dim NET As Long
+    Dim TPRICE As Long
+    Dim SHARES As Long
+    Dim SHBAL As Long
+    Dim YDRCRT As Long
+    Dim AVGPR As Long
+    Dim TPURCH As Long
+    Dim LTDBV As Long
+ '1.2: These are variables used to navigate the loop
+    Dim i As Long
+    Dim LR As Long
+ '1.3: This is a variable used to aid in verification
+    Dim BV As Double
+    BV = 0
+'Section 2: Locating Column headers
+    TRNCD = Rows(1).Find("TRNCD", lookat:=xlWhole).Column
+    GROSS = Rows(1).Find("GROSS", lookat:=xlWhole).Column
+    NET = Rows(1).Find("NET", lookat:=xlWhole).Column
+    TRPRCE = Rows(1).Find("TRPRCE", lookat:=xlWhole).Column
+    SHARES = Rows(1).Find("SHARES", lookat:=xlWhole).Column
+    SHBAL = Rows(1).Find("SHBAL", lookat:=xlWhole).Column
+    AVGPR = Rows(1).Find("AVGPR", lookat:=xlWhole).Column
+    TPURCH = Rows(1).Find("TPURCH", lookat:=xlWhole).Column
+    LTDBV = Rows(1).Find("LTDBV", lookat:=xlWhole).Column
+    YDRCRT = Rows(1).Find("YDRCRT", lookat:=xlWhole).Column
+	TDRCRT = Rows(1).Find("TDRCRT", lookat :=xlWhole).Column
+    LR = Cells(Rows.Count, 1).End(xlUp).Row
+'Section 3: Looping through the Spreadsheet
+   For i = 2 To LR
+        'Section 3.1: AVGPR VALIDATION
+        If Cells(i, SHBAL).Value <> 0 Then
+            If Cells(i, AVGPR).Value = Round(Cells(i, LTDBV).Value / Cells(i, SHBAL).Value, 4) Then
+            Cells(i, AVGPR).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, AVGPR).Interior.Color = RGB(255, 0, 0)
+            End If
+        Else
+            If Cells(i, AVGPR).Value = 0 Then
+            Cells(i, AVGPR).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, AVGPR).Interior.Color = RGB(255, 0, 0)
+            End If
+        End If
+        'Section: 3.2: TPURCH VALIDATION 'Note: sperate trncds
+        If ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "XFI" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "PUR" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "DVR" Then
+            If Cells(i, TPURCH).Value = Round(Cells(i, GROSS).Value - Cells(i, YDRCRT).Value, 2) Then
+            Cells(i, TPURCH).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, TPURCH).Interior.Color = RGB(255, 0, 0)
+            End If
+        ElseIf ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "RED" Then
+            If Cells(i, TPURCH).Value = Round(Cells(i - 1, AVGPR).Value * Cells(i, SHARES).Value, 2) Then
+            Cells(i, TPURCH).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, TPURCH).Interior.Color = RGB(255, 0, 0)
+            End If
+        ElseIf ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "XFO" Then
+            If Cells(i, TPURCH).Value = Cells(i - 1, LTDBV).Value Then
+            Cells(i, TPURCH).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, TPURCH).Interior.Color = RGB(255, 0, 0)
+            End If
+        End If
+        'Section 3.3: LTDBV VALIDATION 'show actual calculations by inserting columns
+        If ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "XFI" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "PUR" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "DVR" 
+			Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "REZ" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "INR" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "SSD"  
+			Or ThisWorkbook.ActiveSheet.Cells(i, TRDNCD) = "XOZ" Then
+			BV = Round(BV + Cells(i, TPURCH).Value, 2)
+            If Cells(i, LTDBV).Value = BV Then
+            Cells(i, LTDBV).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, LTDBV).Interior.55		Color = RGB(255, 0, 0)
+            End If
+        ElseIf ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "RED" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "PUZ" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "DVR" 
+			Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "DVM" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "DVC" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "SSU"
+			Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "IRZ" Or ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "XOZ" Then
+            BV = Round(BV - Cells(i, TPURCH).Value, 2)
+            If Cells(i, LTDBV).Value = BV Then
+            Cells(i, LTDBV).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, LTDBV).Interior.Color = RGB(255, 0, 0)
+            End If
+        ElseIf ThisWorkbook.ActiveSheet.Cells(i, TRNCD) = "XFO" Then
+            If Cells(i, LTDBV).Value = 0 Then
+            Cells(i, LTDBV).Interior.Color = RGB(0, 255, 0)
+            Else: Cells(i, LTDBV).Interior.Color = RGB(255, 0, 0)
+            End If
+        End If
+    Next i
+End Sub
+inserting columns" 
+http://analysistabs.com/excel-vba/inserting-columns-worksheet/
+
+open an email:
+http://www.ozgrid.com/forum/showthread.php?t=154641
+http://www.anysitesupport.com/access-how-do-i-open-a-new-email-message-from-vba/
+http://stackoverflow.com/questions/22747284/open-new-message-in-outlook-by-excel-vba
+
+

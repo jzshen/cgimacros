@@ -1,0 +1,16 @@
+Sub PASTEallSheets()
+    Dim ws As Worksheet
+    wb = ThisWorkbook.Name
+    SourceSheet = ActiveSheet.Name
+    With wb
+    Sheets(SourceSheet).Cells.Select
+    Selection.Copy
+        For Each ws In ThisWorkbook.Sheets
+            If ws.Name <> SourceSheet Then
+                ws.Activate
+                Range("A1").Select
+                ActiveSheet.Paste
+            End If
+        Next
+    End With
+End Sub

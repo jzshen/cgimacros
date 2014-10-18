@@ -1,0 +1,16 @@
+Sub makeemail()
+    
+    Application.ScreenUpdating = False
+    sheetdate = Format(Date, "mm-dd-yyyy")
+    Set myolapp = CreateObject("Outlook.Application")
+    myolapp.Session.Logon
+    Set mail = myolapp.CreateItemFromTemplate("C:\Users\jennifer.shen\My Documents\Scripts\IssueLog.oft")
+    mail.Subject = "Issue Log & Action Items for " & sheetdate
+    strHTML = Replace(mail.HTMLBody, "#date#", sheetdate)
+    mail.HTMLBody = strHTML
+    mail.Attachments.Add Application.ActiveWorkbook.FullName
+    mail.Display
+    Application.ScreenUpdating = True
+    
+End Sub
+

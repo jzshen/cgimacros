@@ -1,0 +1,23 @@
+Sub AllDaysAsWorksheets()
+Dim d As Date
+
+If Sheets.Count > 1 Then
+MsgBox "More than 1 sheet exists. Quitting now."
+Else
+Application.ScreenUpdating = False
+Sheets(1).Activate
+d = Range("A1").Value
+Sheets(1).Name = Format(d, "mmm d")
+d = d + 1
+Do
+Sheets(1).Copy After:=Sheets(Sheets.Count)
+With Sheets(Sheets.Count)
+.Activate
+.Name = Format(d, "mmm d")
+End With
+Range("A1").Value = " "
+d = d + 1
+Loop Until Day(d) = 1
+Application.ScreenUpdating = True
+End If
+End Sub

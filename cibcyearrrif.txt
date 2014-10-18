@@ -1,0 +1,173 @@
+Sub CIBCYEARRRIF()
+
+controlFile = ThisWorkbook.Name
+ActiveWB = ActiveWorkbook.Name
+dataSheet = Sheets(13).Name
+ActiveCol = ActiveCell.Column
+
+Dim dateroll As Date
+Dim EODBOD As Date
+Dim DW As Date
+Dim TATB As Date
+Dim DATB As Date
+Dim CDIC As Date
+Dim UAI As Date
+Dim TranReg As Date
+Dim SOF As Date
+Dim Reports As Date
+Dim none As Date
+
+last_row = ThisWorkbook.Worksheets(dataSheet).UsedRange.Rows.Count
+
+    For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "Date Roll") Then
+            dateroll = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(4, ActiveCol) = dateroll
+        End If
+    Next i
+
+If dateroll > 0 Then
+    ActiveSheet.Cells(4, ActiveCol) = dateroll
+Else
+    ActiveSheet.Cells(4, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(4, ActiveCol).ClearContents
+End If
+
+
+    For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "EOD/BOD Factors") Then
+            EODBOD = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(5, ActiveCol) = EODBOD
+        End If
+    Next i
+
+If EODBOD > 0 Then
+    ActiveSheet.Cells(5, ActiveCol) = EODBOD
+Else
+    ActiveSheet.Cells(5, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(5, ActiveCol).ClearContents
+End If
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "DW Transaction Extract") Then
+             DW = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(9, ActiveCol) = DW
+        End If
+    Next i
+
+If DW > 0 Then
+    ActiveSheet.Cells(9, ActiveCol) = DW
+Else
+    ActiveSheet.Cells(9, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(9, ActiveCol).ClearContents
+End If
+    
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "Term Account Trial Balance") Then
+            TATB = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(10, ActiveCol) = TATB
+        End If
+    Next i
+
+If TATB > 0 Then
+    ActiveSheet.Cells(10, ActiveCol) = TATB
+Else
+    ActiveSheet.Cells(10, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(10, ActiveCol).ClearContents
+End If
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "Demand Account Trial Balance") Then
+             DATB = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(11, ActiveCol) = DATB
+        End If
+    Next i
+
+If DATB > 0 Then
+    ActiveSheet.Cells(11, ActiveCol) = DATB
+Else
+    ActiveSheet.Cells(11, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(11, ActiveCol).ClearContents
+End If
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "CDIC Data Extract") Then
+             CDIC = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(12, ActiveCol) = CDIC
+        End If
+    Next i
+
+If CDIC > 0 Then
+    ActiveSheet.Cells(12, ActiveCol) = CDIC
+Else
+    ActiveSheet.Cells(12, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(12, ActiveCol).ClearContents
+End If
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "Update Attached Invest") Then
+             UAI = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(14, ActiveCol) = UAI
+        End If
+    Next i
+
+If UAI > 0 Then
+    ActiveSheet.Cells(14, ActiveCol) = UAI
+Else
+    ActiveSheet.Cells(14, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(14, ActiveCol).ClearContents
+End If
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "Transaction Register") Then
+             TranReg = Worksheets(dataSheet).Cells(i, 5)
+            ActiveSheet.Cells(15, ActiveCol) = TranReg
+        End If
+    Next i
+    
+If TranReg > 0 Then
+    ActiveSheet.Cells(15, ActiveCol) = TranReg
+Else
+    ActiveSheet.Cells(15, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(15, ActiveCol).ClearContents
+End If
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "CIBC Standard Output File") Then
+             Worksheets(dataSheet).Cells(i, 6) = Worksheets(dataSheet).Cells(i, 5)
+        End If
+    Next i
+
+
+SOF = Application.WorksheetFunction.Max(Worksheets(dataSheet).Columns("F"))
+ActiveSheet.Cells(16, ActiveCol) = SOF
+
+If SOF > 0 Then
+    ActiveSheet.Cells(16, ActiveCol) = SOF
+Else
+    ActiveSheet.Cells(16, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(16, ActiveCol).ClearContents
+End If
+
+Worksheets(dataSheet).Columns(6).ClearContents
+
+For i = 8 To last_row
+        If InStr(ThisWorkbook.Worksheets(dataSheet).Cells(i, 2), "Report") Then
+             Worksheets(dataSheet).Cells(i, 8) = Worksheets(dataSheet).Cells(i, 5)
+        End If
+    Next i
+
+
+Reports = Application.WorksheetFunction.Max(Worksheets(dataSheet).Columns("H"))
+ActiveSheet.Cells(17, ActiveCol) = Reports
+
+If Reports > 0 Then
+    ActiveSheet.Cells(17, ActiveCol) = Reports
+Else
+    ActiveSheet.Cells(17, ActiveCol).Interior.Color = RGB(192, 192, 192)
+    ActiveSheet.Cells(17, ActiveCol).ClearContents
+End If
+
+Worksheets(dataSheet).Columns(8).ClearContents
+End Sub

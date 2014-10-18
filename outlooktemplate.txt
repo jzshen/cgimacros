@@ -1,0 +1,39 @@
+Sub OutlookTemplate()
+
+Dim myolapp As Object
+Dim myitem As Object
+Dim cell As Range
+Dim Rng As Range
+Dim i As Long
+Dim LR As Long
+Dim strHTML As String
+LR = Cells(Rows.Count, 1).End(xlUp).Row
+
+'DECLARE NEW HEADERS HERE
+    name = Rows(1).Find("Name", lookat:=xlWhole).Column
+    mail = Rows(1).Find("Email", lookat:=xlWhole).Column
+    cand = Rows(1).Find("Candidate", lookat:=xlWhole).Column
+    sent = Rows(1).Find("Sent", lookat:=xlWhole).Column
+    attachement = Rows(1).Find("Attachement", lookat:=xlWhole).Column
+Set myolapp = CreateObject("Outlook.Application")
+myolapp.Session.Logon
+
+For i = 2 To LR
+    If Cells(i, sent).Value <> "y" Then
+    Set myitem = myolapp.CreateItemFromTemplate("C:\Users\jennifer.shen\My Documents\Scripts\template-1.oft")
+'To enable attachemetns uncomment anything that says attachement and anme the column "Attachement"
+Path = Cells(i, attachement).Value
+    With myitem
+        .To = Cells(i, mail)
+        .Subject = "CGI Reference Check for " & Cells(i, cand).Text
+        .Attachments.Add (Path)
+        .Display
+        '.Send
+    End With
+'To replace html tags modify below
+    strHTML = Replace(myitem.HTMLBody, "#name#", Cells(i, name))
+    strHTML = Replace(strHTML, "#cand#", Cells(i, cand))
+    myitem.HTMLBody = strHTML
+    End If
+Next i
+End Sub
